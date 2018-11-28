@@ -10,7 +10,7 @@ namespace culTAKU.Misc
 {
     public static class Miscelleneous
     {
-        public static string getHtml(string url)
+        public static string GetHtml(string url)
         {
             string html = string.Empty;
             

@@ -10,7 +10,7 @@ using culTAKU.Models;
 namespace culTAKU.Models
 {
     [Serializable()]
-    class AnimeEpisode : INotifyPropertyChanged
+    public class AnimeEpisode : INotifyPropertyChanged
     {
         [field:NonSerialized()]
         public event PropertyChangedEventHandler PropertyChanged;
