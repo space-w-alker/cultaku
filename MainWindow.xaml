@@ -4,9 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:culTAKU"
+        xmlns:views="clr-namespace:culTAKU.ViewsAndControllers"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+        Title="MainWindow" Height="450" Width="800" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" Background="{x:Null}">
     <Grid>
+        <Border>
+            <Button FontSize="40">Select Folder</Button>
+        </Border>
+        <views:DefaultView x:Name="defaultView"/>
         
     </Grid>
 </Window>

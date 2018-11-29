@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:culTAKU.Styles">
+    <Style TargetType="Image" x:Key="BackgroundStyle">
+        <Setter Property="Source" Value="/culTAKU;component/Icons/dark_theme_main_background.png"/>
+    </Style>
+</ResourceDictionary>
