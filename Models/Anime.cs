@@ -100,6 +100,8 @@ namespace culTAKU.Models
             Id = id;
             anime_path = path;
             name = new DirectoryInfo(anime_path).Name;
+            ListOfEpisodes = new ObservableCollection<AnimeEpisode>();
+            ListOfUnOrderedEpisodes = new ObservableCollection<AnimeEpisode>();
         }
 
         public void ParseEpisodes()
@@ -112,7 +114,7 @@ namespace culTAKU.Models
             };
             Regex SearchIsVideoFile = new Regex(@".*?((\.avi)|(\.mp4)|(\.flv)|(\.mkv))$", RegexOptions.IgnoreCase);
 
-            foreach (FileInfo file in new DirectoryInfo(anime_path).GetFiles())
+            foreach (FileInfo file in new DirectoryInfo(anime_path).GetFiles("*",SearchOption.TopDirectoryOnly))
             {
                 int num = -1;
                 foreach(Regex check in checks)

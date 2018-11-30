@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace culTAKU.Misc
 {
+    [Serializable()]
     public abstract class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

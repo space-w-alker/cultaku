@@ -8,15 +8,24 @@ using System.Threading.Tasks;
 
 namespace culTAKU.Models
 {
+    [Serializable()]
     public class AnimeCollection
     {
-        private string all_anime_path;
+        public List<string> AllAnimePaths;
         private Random random;
 
         public ObservableCollection<Anime> ListOfAnime;
         public ObservableCollection<AnimeEpisode> ContinueWatching;
 
-        public AnimeCollection(string path)
+        public AnimeCollection()
+        {
+            AllAnimePaths = new List<string>();
+            ListOfAnime = new ObservableCollection<Anime>();
+            ContinueWatching = new ObservableCollection<AnimeEpisode>();
+            random = new Random();
+        }
+
+        public void AddPath(string path)
         {
             DirectoryInfo dir = new DirectoryInfo(path);
 
@@ -24,13 +33,24 @@ namespace culTAKU.Models
             //Unit Test This Later
             foreach(DirectoryInfo anime_dir in dir.GetDirectories("*", SearchOption.TopDirectoryOnly))
             {
-                long anime_id = (long)random.NextDouble() * 1000000000;
-                string anime_path = anime_dir.FullName;
+                long anime_id = (long)(random.NextDouble() * 1000000000);
+                
+                string anime_path;
 
+                try
+                {
+                    anime_path = anime_dir.FullName;
+                }
+                catch (NotSupportedException e)
+                {
+                    continue;
+                }
                 Anime anime = new Anime(anime_id, anime_path);
                 anime.ParseEpisodes();
                 ListOfAnime.Add(anime);
             }
+
+            AllAnimePaths.Add(path);
         }
 
         public void AddToContinueWatching(AnimeEpisode episode)

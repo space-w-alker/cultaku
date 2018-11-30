@@ -6,12 +6,10 @@
         xmlns:local="clr-namespace:culTAKU"
         xmlns:views="clr-namespace:culTAKU.ViewsAndControllers"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" Background="{x:Null}">
-    <Grid>
-        <Border>
-            <Button FontSize="40">Select Folder</Button>
-        </Border>
-        <views:DefaultView x:Name="defaultView"/>
+        Title="MainWindow" Height="450" Width="800" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" Background="{x:Null}" Closing="Window_Closing">
+    <Grid Name="mainGrid">
+        
+        
         
     </Grid>
 </Window>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using culTAKU.Models;
+using culTAKU.ViewsAndControllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,23 @@ namespace culTAKU
     /// </summary>
     public partial class MainWindow : Window
     {
+        internal AnimeCollection MyAnimeCollection;
+        
         public MainWindow()
         {
+            MyAnimeCollection = CollectionHandler.LoadMyCollectionFile();
+            if(MyAnimeCollection == null)
+            {
+                MyAnimeCollection = new AnimeCollection();
+            }
+
             InitializeComponent();
+            mainGrid.Children.Add(new HomeView(MyAnimeCollection));
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            CollectionHandler.SaveMyCollectionFile(MyAnimeCollection);
         }
     }
 }
