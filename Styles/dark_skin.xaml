@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:culTAKU.Styles">
+                    xmlns:local="clr-namespace:culTAKU.Styles"
+                    xmlns:converters="clr-namespace:culTAKU">
 
     <SolidColorBrush x:Key="BlackBrush" Color="Black"></SolidColorBrush>
     <SolidColorBrush x:Key="PrimaryBrush" Color="#FF2B2B2B"></SolidColorBrush>
@@ -13,20 +14,44 @@
 
 
 
-        <Style x:Key="SimpleButtonFocusVisual">
+    <!--<converters:Me x:Key="What"/>
+    <converters:ImageUriConverter x:Key="image_uri_converter"/>-->
+
+
+    <Style x:Key="SimpleFocusVisual">
+
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border BorderBrush="{x:Null}" CornerRadius="5" BorderThickness="5" Padding="10">
-                        
+                    <Border BorderBrush="#FF052363" CornerRadius="0" BorderThickness="1" Padding="0" SnapsToDevicePixels="True">
+
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
+    <DataTemplate x:Key="AnimeDisplayTemplate">
+        <Grid >
+            <Grid Height="120" Width="90">
+                <Image Source="{Binding ImagePath, Converter={StaticResource ImageLocationConverter}}" Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <TextBlock Text="{Binding Synopsis}" VerticalAlignment="Bottom" Foreground="White" TextWrapping="WrapWithOverflow" LineStackingStrategy="MaxHeight" TextAlignment="Center" FontWeight="Bold" LineHeight="Auto" MaxHeight="60" FontStretch="Normal" TextTrimming="CharacterEllipsis" Background="#99000000"/>
+                <Grid Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <Path Data="M -93.781992,209.13172 V -50.271211 H 130.86754 Z" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="{DynamicResource PrimaryBrush}" Stretch="Fill"/>
+                    <TextBlock Text="{Binding Rating, StringFormat='0.00'}" Foreground="White" FontWeight="Bold" Padding="2" FontSize="9" Margin="0,5,0,0"/>
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <Style TargetType="ListBoxItem" x:Key="AnimeItemDisplay">
+
+    </Style>
+
     <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource SimpleFocusVisual}"/>
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -35,7 +60,7 @@
                     <!-- We use Grid as a root because it is easy to add more elements to customize the button -->
                     <Grid x:Name="Grid">
                         <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" CornerRadius="2"/>
-
+                        
                         <!-- Content Presenter is where the text content etc is placed by the control -->
                         <!-- The bindings are useful so that the control can be parameterized without editing the template -->
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
@@ -43,11 +68,11 @@
 
                     <!--Each state sets a brush on the Border in the template -->
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsKeyboardFocused" Value="true">
+                        <!--<Trigger Property="IsKeyboardFocused" Value="true">
                             <Setter Property="BorderBrush" Value="{DynamicResource ToneBrush}" TargetName="Border"/>
                             <Setter Property="BorderThickness" Value="2" TargetName="Border"/>
                             <Setter Property="CornerRadius" Value="2" TargetName="Border"/>
-                        </Trigger>
+                        </Trigger>-->
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Background" Value="{DynamicResource SecondaryBrush}" TargetName="Border"/>
                         </Trigger>

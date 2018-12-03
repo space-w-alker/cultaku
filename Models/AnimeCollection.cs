@@ -28,7 +28,10 @@ namespace culTAKU.Models
         public void AddPath(string path)
         {
             DirectoryInfo dir = new DirectoryInfo(path);
-
+            if (!Directory.Exists(Path.GetFullPath("/Image")))
+            {
+                Directory.CreateDirectory(Path.GetFullPath("/Image"));
+            }
 
             //Unit Test This Later
             foreach(DirectoryInfo anime_dir in dir.GetDirectories("*", SearchOption.TopDirectoryOnly))
@@ -47,6 +50,8 @@ namespace culTAKU.Models
                 }
                 Anime anime = new Anime(anime_id, anime_path);
                 anime.ParseEpisodes();
+
+                anime.FetchDetailsAsync();
                 ListOfAnime.Add(anime);
             }
 

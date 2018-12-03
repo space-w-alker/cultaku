@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace culTAKU.Models
 {
@@ -27,6 +28,7 @@ namespace culTAKU.Models
         private string synopsis;
         private int episodes;
         private string image_path;
+        private float rating;
 
         public long Id
         {
@@ -91,17 +93,34 @@ namespace culTAKU.Models
             }
         }
 
+        public float Rating
+        {
+            get { return rating; }
+            set
+            {
+                if(rating != value)
+                {
+                    rating = value;
+                    OnPropertyChanged("Rating");
+                }
+            }
+        }
+
         public bool IsPathExists { get { return Directory.Exists(anime_path); } }
         public bool IsImagePathExists { get { return Directory.Exists(ImagePath); } }
         public bool IsKnownAnime { get; set; }
+
+        public Anime() { }
 
         public Anime(long id, string path)
         {
             Id = id;
             anime_path = path;
             name = new DirectoryInfo(anime_path).Name;
+            rating = 0;
             ListOfEpisodes = new ObservableCollection<AnimeEpisode>();
             ListOfUnOrderedEpisodes = new ObservableCollection<AnimeEpisode>();
+            ImagePath = "Icons/unknown.png";
         }
 
         public void ParseEpisodes()
@@ -129,7 +148,7 @@ namespace culTAKU.Models
             }
         }
 
-        public void FetchDetails()
+        private void FetchDetails()
         {
             Regex get_target_anime_url = new Regex("information(.|\n)*?href=\"(?<link>.*?)\"", RegexOptions.IgnoreCase);
             Regex get_anime_id = new Regex(@"\d+");
@@ -137,12 +156,33 @@ namespace culTAKU.Models
             Regex get_anime_synopsis = new Regex("<span itemprop=\"description\">(?<synopsis>(.|\n)*?)</span>");
 
             string search_response = Miscelleneous.GetHtml(base_html_string + Name);
+            if (search_response == null) { return; }
+
+
             string anime_url = get_target_anime_url.Match(search_response).Groups["link"].Value;
             int anime_id = Int32.Parse(get_anime_id.Match(anime_url).Value);
+
             string anime_page = Miscelleneous.GetHtml(anime_url);
+            if(anime_page == null) { return; }
+
             string synopsis = get_anime_synopsis.Match(anime_page).Groups["synopsis"].Value;
+            string image_url = get_anime_image_url.Match(anime_page).Groups["image_link"].Value;
+
+
+
             Id = anime_id;
             Synopsis = synopsis;
+
+
+            ImagePath = Miscelleneous.GetImage(image_url, anime_id);
         }
+
+        public void FetchDetailsAsync()
+        {
+            ThreadPool.QueueUserWorkItem(_=> {
+                FetchDetails();
+            });
+        }
+
     }
 }

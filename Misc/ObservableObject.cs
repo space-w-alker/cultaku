@@ -10,6 +10,7 @@ namespace culTAKU.Misc
     [Serializable()]
     public abstract class ObservableObject : INotifyPropertyChanged
     {
+        [field:NonSerialized()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string PropName)

@@ -403,6 +403,7 @@
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SolidBorderBrush}"/>
+  
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
