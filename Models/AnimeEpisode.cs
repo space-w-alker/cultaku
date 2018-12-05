@@ -15,18 +15,21 @@ namespace culTAKU.Models
         [field:NonSerialized()]
         public event PropertyChangedEventHandler PropertyChanged;
         public enum STATUS { WATCHING, WATCHED, NEW, MISSING_LINK }
+        private readonly Anime parentAnime;
 
         private TimeSpan stoppedAt;
         private STATUS status;
 
+        public Anime ParentAnime { get { return parentAnime; } }
         public int EpisodeNumber { get; }
         public string EpisodePath { get; }
-        public TimeSpan StoppedAt { get { return stoppedAt; } set { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StoppedAt")); } }
-        public STATUS Status { get { return status; } set { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Status")); } }
+        public TimeSpan StoppedAt { get { return stoppedAt; } set { stoppedAt = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StoppedAt")); } }
+        public STATUS Status { get { return status; } set { status = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Status")); } }
         public bool IsPathExists { get { return Directory.Exists(EpisodePath); } }
         
-        public AnimeEpisode(int episodeNumber, string episodePath)
+        public AnimeEpisode(Anime parent_anime, int episodeNumber, string episodePath)
         {
+            parentAnime = parent_anime;
             EpisodeNumber = episodeNumber;
             EpisodePath = episodePath;
             stoppedAt = new TimeSpan();

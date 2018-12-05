@@ -15,7 +15,7 @@ namespace culTAKU.Misc
         private const string AnimeListUrl = "https://myanimelist.net/";
 
 
-        public static Window MainWindow;
+        public static culTAKU.MainWindow MainWindow;
         
 
         public static string GetHtml(string url)

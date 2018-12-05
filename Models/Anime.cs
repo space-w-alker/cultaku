@@ -145,7 +145,7 @@ namespace culTAKU.Models
                         break;
                     }
                 }
-                ListOfUnOrderedEpisodes.Add(new AnimeEpisode(num, file.FullName));
+                ListOfUnOrderedEpisodes.Add(new AnimeEpisode(this, num, file.FullName));
             }
         }
 

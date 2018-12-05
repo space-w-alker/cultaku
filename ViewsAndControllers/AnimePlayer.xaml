@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="culTAKU.ViewsAndControllers.AnimePlayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:culTAKU.ViewsAndControllers"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <MediaElement Name="AnimeMediaPlayer"/>
+        <Path Name="PlayButtonPathScreen" Stretch="Fill" Fill="{DynamicResource PrimaryBrush}" Data="m 110.18298,102.27672 a 66.901787,66.901787 0 0 0 -66.901848,66.90186 66.901787,66.901787 0 0 0 66.901848,66.90186 66.901787,66.901787 0 0 0 66.90185,-66.90186 66.901787,66.901787 0 0 0 -66.90185,-66.90186 z m -16.391248,38.51134 24.587128,14.19552 24.58714,14.195 -24.58714,14.19551 -24.587128,14.19552 v -28.39103 z" Stroke="#00000000" StrokeThickness="3" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden"/>
+        <Path Name="PauseButtonPathScreen" Stretch="Fill" Fill="{DynamicResource PrimaryBrush}" Data="M -408.92211,-122.0785 A 112.78772,112.78772 0 0 0 -521.71005,-9.2910715 112.78772,112.78772 0 0 0 -408.92211,103.49687 112.78772,112.78772 0 0 0 -296.13469,-9.2910715 112.78772,112.78772 0 0 0 -408.92211,-122.0785 Z m -51.58185,45.291807 h 37.94961 V 58.205066 h -37.94961 z m 65.21358,0 h 37.94963 V 58.205066 h -37.94963 z" Stroke="#00000000" StrokeThickness="3" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid Height="80" VerticalAlignment="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Slider IsSnapToTickEnabled="True"></Slider>
+            
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <Button Padding="10" Style="{StaticResource ButtonNoBackground}">
+                    <Path x:Name="PreviousButtonPath" Stretch="Fill" Fill="Cyan" Data="M -103.46414,322.11177 V 160.42965 l -90.3919,52.18752 v -47.30564 h -49.17219 l 0,75.69563 -0.45682,0.26355 0.45682,0.26355 0,75.69616 h 49.17219 v -47.30616 z" Stroke="Cyan" StrokeThickness="8" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"/>
+                </Button>
+                <Button Padding="10" Style="{StaticResource ButtonNoBackground}">
+                    <Path x:Name="PlayButtonPath" Stretch="Fill" Fill="Cyan" Data="M 36.481207,225.89455 V 64.212604 L 176.50188,145.05358 Z" Stroke="Cyan" StrokeThickness="15" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"/>
+                </Button>
+                <Button Padding="10" Style="{StaticResource ButtonNoBackground}">
+                    <Path x:Name="NextButtonPath" Stretch="Fill" Fill="Cyan" Data="M 137.88086 242.69336 L 137.88086 853.77539 L 479.51953 656.53125 L 479.51953 835.32422 L 665.36719 835.32422 L 665.36719 549.23047 L 667.09375 548.23438 L 665.36719 547.23828 L 665.36719 261.14258 L 479.51953 261.14258 L 479.51953 439.9375 L 137.88086 242.69336 z " Stroke="Cyan" StrokeThickness="8" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"/>
+                </Button>
+            </StackPanel>
+            
+        </Grid>
+    </Grid>
+</UserControl>

@@ -37,6 +37,21 @@ namespace culTAKU
             mainGrid.Children.Insert(0,new HomeView(MyAnimeCollection));
         }
 
+
+        public void PlayAnime(long animeId, int EpisodeNumber = -1)
+        {
+            foreach(Anime anime in MyAnimeCollection.ListOfAnime)
+            {
+                if (anime.Id == animeId)
+                {
+                    AnimePlayer player = new AnimePlayer();
+                    player.PlayAnime(anime);
+                    mainGrid.Children.RemoveAt(0);
+                    mainGrid.Children.Insert(0, player);
+                }
+            }
+        }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             CollectionHandler.SaveMyCollectionFile(MyAnimeCollection);

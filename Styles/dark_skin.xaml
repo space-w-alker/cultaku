@@ -1,4 +1,6 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary x:Class="culTAKU.Styles.dark_skin"
+                    x:ClassModifier="public"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:culTAKU.Styles"
                     xmlns:converters="clr-namespace:culTAKU">
@@ -8,7 +10,7 @@
     <SolidColorBrush x:Key="BlackBrush" Color="Black"></SolidColorBrush>
     <SolidColorBrush x:Key="PrimaryBrush" Color="#FF2B2B2B"></SolidColorBrush>
     <SolidColorBrush x:Key="SecondaryBrush" Color="#FF5F5F5F"></SolidColorBrush>
-    <SolidColorBrush x:Key="ToneBrush" Color="#FF60D3D3"></SolidColorBrush>
+    <SolidColorBrush x:Key="ToneBrush" Color="Cyan"></SolidColorBrush>
     <SolidColorBrush x:Key="HighlightBrush" Color="#FFD1D1D1"></SolidColorBrush>
 
     <SolidColorBrush x:Key="DefaultTextBrush" Color="White"></SolidColorBrush>
@@ -51,7 +53,7 @@
     <Storyboard x:Key="ShowPlayButton">
         <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="PlayButtonPath">
             <EasingColorKeyFrame KeyTime="0" Value="#00000000"/>
-            <EasingColorKeyFrame KeyTime="0:0:0.2" Value="#FF60D3D3"/>
+            <EasingColorKeyFrame KeyTime="0:0:0.2" Value="Cyan"/>
         </ColorAnimationUsingKeyFrames>
     </Storyboard>
 
@@ -83,6 +85,23 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Button" x:Key="ButtonNoBackground">
+        <Setter Property="Background" Value="#00932D2D"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" CornerRadius="2"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="Button" x:Key="PlayButtonStyle">
         <Setter Property="Background" Value="#00932D2D"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -94,10 +113,13 @@
                         <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" CornerRadius="2"/>
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
                     </Grid>
+                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    
+    
 
     <DataTemplate x:Key="AnimeDisplayTemplate">
         <Grid>
@@ -109,7 +131,7 @@
                     <TextBlock Text="{Binding Rating, StringFormat='0.00'}" Foreground="White" FontWeight="Bold" Padding="2" FontSize="9" Margin="0,5,0,0"/>
                 </Grid>
 
-                <Button Name="PlayButton" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource PlayButtonStyle}" RenderTransformOrigin="0.5,0.5" Tag="{Binding Id}">
+                <Button Name="PlayButton" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource PlayButtonStyle}" RenderTransformOrigin="0.5,0.5" Tag="{Binding Id}" Cursor="Hand" Click="PlayButton_Click" >
                     <Button.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -118,7 +140,18 @@
                             <TranslateTransform/>
                         </TransformGroup>
                     </Button.RenderTransform>
-                    <Path Name="PlayButtonPath" Stretch="Fill" Fill="{x:Null}" Data="m 110.18298,102.27672 a 66.901787,66.901787 0 0 0 -66.901848,66.90186 66.901787,66.901787 0 0 0 66.901848,66.90186 66.901787,66.901787 0 0 0 66.90185,-66.90186 66.901787,66.901787 0 0 0 -66.90185,-66.90186 z m -16.391248,38.51134 24.587128,14.19552 24.58714,14.195 -24.58714,14.19551 -24.587128,14.19552 v -28.39103 z" Stroke="#00000000" StrokeThickness="3"/>
+                    <!--<Path Name="PlayButtonPath" Stretch="Fill" Fill="{x:Null}" Data="m 110.18298,102.27672 a 66.901787,66.901787 0 0 0 -66.901848,66.90186 66.901787,66.901787 0 0 0 66.901848,66.90186 66.901787,66.901787 0 0 0 66.90185,-66.90186 66.901787,66.901787 0 0 0 -66.90185,-66.90186 z m -16.391248,38.51134 24.587128,14.19552 24.58714,14.195 -24.58714,14.19551 -24.587128,14.19552 v -28.39103 z" Stroke="#00000000" StrokeThickness="3"/>-->
+                    <Path Name="PlayButtonPath" Stretch="Fill" Fill="{x:Null}" Data="m 163.99573,191.72713 -80.840974,0 -80.8409741,0 L 42.734268,121.7168 83.154755,51.706459 123.57524,121.71679 Z" Stroke="#00000000" StrokeThickness="12" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5">
+                        <Path.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Path.RenderTransform>
+                    </Path>
+
                 </Button>
 
             </Grid>
