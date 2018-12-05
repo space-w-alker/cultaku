@@ -3,6 +3,8 @@
                     xmlns:local="clr-namespace:culTAKU.Styles"
                     xmlns:converters="clr-namespace:culTAKU">
 
+
+
     <SolidColorBrush x:Key="BlackBrush" Color="Black"></SolidColorBrush>
     <SolidColorBrush x:Key="PrimaryBrush" Color="#FF2B2B2B"></SolidColorBrush>
     <SolidColorBrush x:Key="SecondaryBrush" Color="#FF5F5F5F"></SolidColorBrush>
@@ -12,6 +14,57 @@
     <SolidColorBrush x:Key="DefaultTextBrush" Color="White"></SolidColorBrush>
     <SolidColorBrush x:Key="DisabledTextBrush" Color="#FF7C7C7C"></SolidColorBrush>
 
+    <Storyboard x:Key="SwellView">
+        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="PlayButton">
+            <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="1.5">
+                <EasingDoubleKeyFrame.EasingFunction>
+                    <ElasticEase EasingMode="EaseOut" Oscillations="2"/>
+                </EasingDoubleKeyFrame.EasingFunction>
+            </EasingDoubleKeyFrame>
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="PlayButton">
+            <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1.5">
+                <EasingDoubleKeyFrame.EasingFunction>
+                    <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
+                </EasingDoubleKeyFrame.EasingFunction>
+            </EasingDoubleKeyFrame>
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="ShrinkView">
+        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="PlayButton">
+            <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1">
+                <EasingDoubleKeyFrame.EasingFunction>
+                    <CircleEase EasingMode="EaseOut"/>
+                </EasingDoubleKeyFrame.EasingFunction>
+            </EasingDoubleKeyFrame>
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="PlayButton">
+            <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1">
+                <EasingDoubleKeyFrame.EasingFunction>
+                    <CircleEase EasingMode="EaseOut"/>
+                </EasingDoubleKeyFrame.EasingFunction>
+            </EasingDoubleKeyFrame>
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="ShowPlayButton">
+        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="PlayButtonPath">
+            <EasingColorKeyFrame KeyTime="0" Value="#00000000"/>
+            <EasingColorKeyFrame KeyTime="0:0:0.2" Value="#FF60D3D3"/>
+        </ColorAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="HidePlayButton">
+        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="PlayButtonPath">
+            <EasingColorKeyFrame KeyTime="0" Value="#FF60D3D3"/>
+            <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#00000000"/>
+        </ColorAnimationUsingKeyFrames>
+    </Storyboard>
+
+
+    
+
 
 
     <!--<converters:Me x:Key="What"/>
@@ -19,34 +72,94 @@
 
 
     <Style x:Key="SimpleFocusVisual">
-
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border BorderBrush="#FF052363" CornerRadius="0" BorderThickness="1" Padding="0" SnapsToDevicePixels="True">
-
+                    <Border BorderBrush="{StaticResource ToneBrush}" CornerRadius="0" BorderThickness="1" Padding="0" SnapsToDevicePixels="True" Margin="2">
+                        
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
+    <Style TargetType="Button" x:Key="PlayButtonStyle">
+        <Setter Property="Background" Value="#00932D2D"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" CornerRadius="2"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <DataTemplate x:Key="AnimeDisplayTemplate">
-        <Grid >
-            <Grid Height="120" Width="90">
+        <Grid>
+            <Grid Height="120" Width="90" >
                 <Image Source="{Binding ImagePath, Converter={StaticResource ImageLocationConverter}}" Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                <TextBlock Text="{Binding Synopsis}" VerticalAlignment="Bottom" Foreground="White" TextWrapping="WrapWithOverflow" LineStackingStrategy="MaxHeight" TextAlignment="Center" FontWeight="Bold" LineHeight="Auto" MaxHeight="60" FontStretch="Normal" TextTrimming="CharacterEllipsis" Background="#99000000"/>
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom" Foreground="White" TextWrapping="WrapWithOverflow" LineStackingStrategy="MaxHeight" TextAlignment="Center" FontWeight="Bold" LineHeight="Auto" MaxHeight="60" FontStretch="Normal" TextTrimming="CharacterEllipsis" Background="#99000000"/>
                 <Grid Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Path Data="M -93.781992,209.13172 V -50.271211 H 130.86754 Z" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="{DynamicResource PrimaryBrush}" Stretch="Fill"/>
+                    <Path Data="M -93.781992,209.13172 V -50.271211 H 130.86754 Z" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="{DynamicResource SecondaryBrush}" Stretch="Fill"/>
                     <TextBlock Text="{Binding Rating, StringFormat='0.00'}" Foreground="White" FontWeight="Bold" Padding="2" FontSize="9" Margin="0,5,0,0"/>
                 </Grid>
 
+                <Button Name="PlayButton" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource PlayButtonStyle}" RenderTransformOrigin="0.5,0.5" Tag="{Binding Id}">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                    <Path Name="PlayButtonPath" Stretch="Fill" Fill="{x:Null}" Data="m 110.18298,102.27672 a 66.901787,66.901787 0 0 0 -66.901848,66.90186 66.901787,66.901787 0 0 0 66.901848,66.90186 66.901787,66.901787 0 0 0 66.90185,-66.90186 66.901787,66.901787 0 0 0 -66.90185,-66.90186 z m -16.391248,38.51134 24.587128,14.19552 24.58714,14.195 -24.58714,14.19551 -24.587128,14.19552 v -28.39103 z" Stroke="#00000000" StrokeThickness="3"/>
+                </Button>
+
             </Grid>
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.MouseEnter">
+                    <BeginStoryboard Storyboard="{StaticResource SwellView}"/>
+                    <BeginStoryboard Storyboard="{StaticResource ShowPlayButton}"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="FrameworkElement.MouseLeave">
+                    <BeginStoryboard Storyboard="{StaticResource ShrinkView}"/>
+                    <BeginStoryboard Storyboard="{StaticResource HidePlayButton}"/>
+                </EventTrigger>
+            </Grid.Triggers>
         </Grid>
     </DataTemplate>
 
-    <Style TargetType="ListBoxItem" x:Key="AnimeItemDisplay">
+    <Style x:Key="AnimeItemDisplay" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource SimpleFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid SnapsToDevicePixels="true">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
 
+                        <!-- Change IsSelected SelectedBackgroundBrush to set the selection color for the items -->
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="{StaticResource HighlightBrush}" TargetName="Border"/>
+                        </Trigger>
+                            
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
@@ -90,7 +203,13 @@
         </Setter>
     </Style>
 
+    
+
     <Style TargetType="Image" x:Key="BackgroundStyle">
         <Setter Property="Source" Value="/culTAKU;component/Icons/dark_theme_main_background.png"/>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="Background">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
     </Style>
 </ResourceDictionary>

@@ -33,6 +33,7 @@ namespace culTAKU
             }
 
             InitializeComponent();
+            Misc.Miscelleneous.MainWindow = this;
             mainGrid.Children.Insert(0,new HomeView(MyAnimeCollection));
         }
 

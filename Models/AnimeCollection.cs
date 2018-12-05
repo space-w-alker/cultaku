@@ -28,9 +28,9 @@ namespace culTAKU.Models
         public void AddPath(string path)
         {
             DirectoryInfo dir = new DirectoryInfo(path);
-            if (!Directory.Exists(Path.GetFullPath("/Image")))
+            if (!Directory.Exists(Path.GetFullPath("Image/")))
             {
-                Directory.CreateDirectory(Path.GetFullPath("/Image"));
+                Directory.CreateDirectory(Path.GetFullPath("Image/"));
             }
 
             //Unit Test This Later

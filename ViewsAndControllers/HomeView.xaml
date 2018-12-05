@@ -7,10 +7,14 @@
              xmlns:models="clr-namespace:culTAKU.Models"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        
+    </UserControl.Resources>
+    
     <Grid>
-        <Image x:Name="image" Style="{StaticResource BackgroundStyle}" Stretch="Fill"/>
+        <!--<Image x:Name="image" Style="{StaticResource BackgroundStyle}" Stretch="Fill"/>-->
 
-        <ListBox Background="{x:Null}" Name="anime_list" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource AnimeDisplayTemplate}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+        <ListBox Background="{x:Null}" Name="anime_list" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource AnimeDisplayTemplate}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ItemContainerStyle="{StaticResource AnimeItemDisplay}">
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -25,7 +29,7 @@
         <Border Name="selectFolderView" Background="#FF383838" Opacity="0.8" Visibility="Collapsed">
             <Button HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Padding="16,6" BorderThickness="0" Click="SelectFolder_Click">Select Anime Folder</Button>
         </Border>
-
         
+
     </Grid>
 </UserControl>

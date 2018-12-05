@@ -58,6 +58,9 @@
     </ApplicationDefinition>
     <Compile Include="Misc\Converters\ImageUriConverter.cs" />
     <Compile Include="Models\CollectionHandler.cs" />
+    <Compile Include="Styles\dark_skin.xaml.cs">
+      <DependentUpon>dark_skin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewsAndControllers\Extras\StatusDisplay.xaml.cs">
       <DependentUpon>StatusDisplay.xaml</DependentUpon>
     </Compile>

@@ -6,12 +6,17 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace culTAKU.Misc
 {
     public static class Miscelleneous
     {
         private const string AnimeListUrl = "https://myanimelist.net/";
+
+
+        public static Window MainWindow;
+        
 
         public static string GetHtml(string url)
         {
@@ -57,16 +62,23 @@ namespace culTAKU.Misc
             else return true;
         }
 
-        public static string GetImage(string url, int id)
+        public static string GetImage(string url, int id, bool IgnoreCurrentImage=true)
         {
+            string image_location = string.Format("Image/AnimeImage-{0}.jpg", id);
+
+            if (!IgnoreCurrentImage && File.Exists(image_location))
+            {
+                return image_location;
+            }
+
             using (WebClient client = new WebClient())
             {
                 int RetryCount = 0;
+
                 while (true)
                 {
                     try
                     {
-                        string image_location = string.Format("/Image/AnimeImage-{0}.jpg", id);
                         client.DownloadFile(new Uri(url), Path.GetFullPath(image_location));
                         return image_location;
                     }
@@ -75,6 +87,7 @@ namespace culTAKU.Misc
                         if (RetryCount == 10)
                         {
                             return null;
+                            
                         }
 
                         Thread.Sleep(1000 * RetryCount + 1);

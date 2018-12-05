@@ -93,6 +93,7 @@ namespace culTAKU.Models
             }
         }
 
+
         public float Rating
         {
             get { return rating; }
@@ -174,7 +175,7 @@ namespace culTAKU.Models
             Synopsis = synopsis;
 
 
-            ImagePath = Miscelleneous.GetImage(image_url, anime_id);
+            ImagePath = Miscelleneous.GetImage(image_url, anime_id, false);
         }
 
         public void FetchDetailsAsync()
