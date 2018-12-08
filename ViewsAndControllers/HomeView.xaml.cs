@@ -13,8 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Forms;
+using System.Threading;
 
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace culTAKU.ViewsAndControllers
 {
@@ -39,8 +41,48 @@ namespace culTAKU.ViewsAndControllers
                 
                 selectFolderView.Visibility = Visibility.Visible;
             }
+
             DataContext = MyAnimeCollection.ListOfAnime;
             anime_list.ItemsSource = MyAnimeCollection.ListOfAnime;
+        }
+
+        public void FetchAllAnime()
+        {
+            Misc.Miscelleneous.MainWindow.PropertyChanged += InternetStateChanged;
+            Misc.Miscelleneous.MainWindow.CheckInternet();
+        }
+
+        public void InternetStateChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "IsConnected")
+            {
+                Misc.Miscelleneous.MainWindow.PropertyChanged -= InternetStateChanged;
+                if (Misc.Miscelleneous.MainWindow.IsConnected)
+                {
+                    Misc.Miscelleneous.MainWindow.statusDisplay.DisplayText = "Fetching Anime Details...";
+                    Misc.Miscelleneous.MainWindow.statusDisplay.DisplayImagePath = Extras.StatusDisplay.StatusType.LOADING;
+                    
+                    foreach(Anime anime in MyAnimeCollection.ListOfAnime)
+                    {
+                        if (anime.ImageFetched) continue;
+                        anime.FetchDetailsAsync();
+                    }
+                }
+
+                else
+                {
+                    Misc.Miscelleneous.MainWindow.statusDisplay.DisplayText = "Connection Error. Unable to fetch Anime details";
+                    Misc.Miscelleneous.MainWindow.statusDisplay.DisplayImagePath = Extras.StatusDisplay.StatusType.ERROR;
+                    ThreadPool.QueueUserWorkItem(_ =>
+                    {
+                        Thread.Sleep(5000);
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            Misc.Miscelleneous.MainWindow.OverLayer.Children.Remove(Misc.Miscelleneous.MainWindow.statusDisplay);
+                        }));
+                    });
+                }
+            }
         }
 
         private void SelectFolder_Click(object sender, RoutedEventArgs e)
@@ -50,6 +92,7 @@ namespace culTAKU.ViewsAndControllers
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     MyAnimeCollection.AddPath(dialog.SelectedPath);
+                    FetchAllAnime();
                     selectFolderView.Visibility = Visibility.Collapsed;
                 }
             }

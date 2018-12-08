@@ -14,11 +14,11 @@
     <Grid>
         <!--<Image x:Name="image" Style="{StaticResource BackgroundStyle}" Stretch="Fill"/>-->
 
-        <ListBox Background="{x:Null}" Name="anime_list" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource AnimeDisplayTemplate}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ItemContainerStyle="{StaticResource AnimeItemDisplay}">
+        <ListBox Background="{x:Null}" Name="anime_list" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemTemplate="{StaticResource AnimeDisplayTemplate}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ItemContainerStyle="{StaticResource AnimeItemDisplay}" VerticalAlignment="Top">
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="6" Columns="14"/>
+                    <UniformGrid  Columns="15"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>

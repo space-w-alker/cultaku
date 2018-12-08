@@ -1,0 +1,74 @@
+﻿<UserControl x:Name="userControl" x:Class="culTAKU.ViewsAndControllers.Extras.TopOptionsBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:culTAKU.ViewsAndControllers.Extras"
+             mc:Ignorable="d" 
+             Width="900" Height="80" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" HorizontalAlignment="Center" Background="#00000000">
+    <UserControl.Resources>
+        <Storyboard x:Key="Raise">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="userControl">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-78">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="Drop">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="userControl">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-5">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+    </UserControl.Resources>
+    <UserControl.RenderTransform>
+        <TransformGroup>
+            <ScaleTransform/>
+            <SkewTransform/>
+            <RotateTransform/>
+            <TranslateTransform/>
+        </TransformGroup>
+    </UserControl.RenderTransform>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.MouseLeave">
+            <BeginStoryboard Storyboard="{StaticResource Raise}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="FrameworkElement.MouseEnter">
+            <BeginStoryboard Storyboard="{StaticResource Drop}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+    <Grid Margin="0,0,0,5">
+        <Grid Background="#CC5F5F5F">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="133*"/>
+                <ColumnDefinition Width="17*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="0,15" Orientation="Horizontal">
+                <Border x:Name="border" Padding="0" Width="448"  BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ToneBrush}" VerticalAlignment="Center" Margin="20,0,0,0">
+                    <TextBox x:Name="SearchBar"  Background="#00000000" VerticalAlignment="Center" FontSize="18" BorderBrush="{x:Null}" Foreground="White"></TextBox>
+                </Border>
+                <Button Margin="7,0,0,0" Height="{Binding ActualHeight, ElementName=border, Mode=OneWay}" Padding="8,4" BorderThickness="0" Foreground="White">
+                    Search
+                    <!--<Path Stretch="Fill" Data="M 268.39944,-342.3036 A 169.85579,169.85579 0 0 1 438.2549,-172.44813 169.85579,169.85579 0 0 1 268.39944,-2.5926553 169.85579,169.85579 0 0 1 167.86428,-35.778205 l -27.41797,27.4179697 c 3.58918,5.48868 6.19148,11.18531 7.05079,16.27149 4.68454,27.7276403 3.8857,28.8658703 -78.894545,112.4667853 -49.53893,50.03004 -80.8825,79.33949 -88.77148,83.00977 -15.44054,7.18356 -27.17821,7.17642 -43.03711,-0.0254 -16.4629,-7.47611 -28.95102,-24.09729 -30.86523,-41.08008 -2.94086,-26.09115 1.0532,-31.72428 76.37109,-107.736325 38.58988,-38.94556 75.39742,-74.43763 81.79492,-78.87109 13.69697,-9.49201 34.02738,-12.559 49.468755,-7.46289 0.9363,0.309 1.88645,0.6878 2.84375,1.125 l 27.01172,-27.01172 A 169.85579,169.85579 0 0 1 98.543965,-172.44813 169.85579,169.85579 0 0 1 268.39944,-342.3036 Z m 0,45.55078 A 124.30356,124.30356 0 0 0 144.09475,-172.44813 124.30356,124.30356 0 0 0 268.39944,-48.145395 124.30356,124.30356 0 0 0 392.70217,-172.44813 124.30356,124.30356 0 0 0 268.39944,-296.75282 Z" Fill="{DynamicResource BlackBrush}" Stroke="{DynamicResource BlackBrush}"/>-->
+                </Button>
+                <Label Content="Sort By:" VerticalAlignment="Center" Margin="30,0,0,0" FontSize="16" Foreground="White"/>
+                <ComboBox x:Name="SortOption" SelectedIndex="2" VerticalAlignment="Center" BorderBrush="{x:Null}" Background="{DynamicResource PrimaryBrush}" Margin="0,0,70,0" FontSize="16">
+                    <TextBlock>Name</TextBlock>
+                    <TextBlock>Rating</TextBlock>
+                    <TextBlock>Number of Episodes</TextBlock>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,15,10,15" Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Width="89">
+                <Button x:Name="FetchAllDetailsButton" Padding="8,2" Content="Fetch Details" Height="{Binding ActualHeight, ElementName=SortOption, Mode=OneWay}" BorderBrush="{x:Null}" BorderThickness="0" Margin="0" Foreground="White"></Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

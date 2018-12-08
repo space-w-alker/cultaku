@@ -50,8 +50,6 @@ namespace culTAKU.Models
                 }
                 Anime anime = new Anime(anime_id, anime_path);
                 anime.ParseEpisodes();
-
-                anime.FetchDetailsAsync();
                 ListOfAnime.Add(anime);
             }
 
@@ -68,7 +66,7 @@ namespace culTAKU.Models
         {
             for (int i = 0; i < ContinueWatching.Count; i++)
             {
-                if (episode == ContinueWatching[i])
+                if (episode.ParentAnime.Name == ContinueWatching[i].ParentAnime.Name)
                 {
                     ContinueWatching.RemoveAt(i);
                 }

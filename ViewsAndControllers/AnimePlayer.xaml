@@ -6,29 +6,139 @@
              xmlns:local="clr-namespace:culTAKU.ViewsAndControllers"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <UserControl.Resources>
+        <Storyboard x:Key="Burst">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="4">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="4">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="HideEpisodesBar">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="345">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="ShowEpisodesBar">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    
+
+
+    <Grid Background="Black">
         <MediaElement Name="AnimeMediaPlayer"/>
-        <Path Name="PlayButtonPathScreen" Stretch="Fill" Fill="{DynamicResource PrimaryBrush}" Data="m 110.18298,102.27672 a 66.901787,66.901787 0 0 0 -66.901848,66.90186 66.901787,66.901787 0 0 0 66.901848,66.90186 66.901787,66.901787 0 0 0 66.90185,-66.90186 66.901787,66.901787 0 0 0 -66.90185,-66.90186 z m -16.391248,38.51134 24.587128,14.19552 24.58714,14.195 -24.58714,14.19551 -24.587128,14.19552 v -28.39103 z" Stroke="#00000000" StrokeThickness="3" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden"/>
-        <Path Name="PauseButtonPathScreen" Stretch="Fill" Fill="{DynamicResource PrimaryBrush}" Data="M -408.92211,-122.0785 A 112.78772,112.78772 0 0 0 -521.71005,-9.2910715 112.78772,112.78772 0 0 0 -408.92211,103.49687 112.78772,112.78772 0 0 0 -296.13469,-9.2910715 112.78772,112.78772 0 0 0 -408.92211,-122.0785 Z m -51.58185,45.291807 h 37.94961 V 58.205066 h -37.94961 z m 65.21358,0 h 37.94963 V 58.205066 h -37.94963 z" Stroke="#00000000" StrokeThickness="3" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Grid Height="80" VerticalAlignment="Bottom">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="5*"/>
-            </Grid.RowDefinitions>
-            <Slider IsSnapToTickEnabled="True"></Slider>
-            
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
-                <Button Padding="10" Style="{StaticResource ButtonNoBackground}">
-                    <Path x:Name="PreviousButtonPath" Stretch="Fill" Fill="Cyan" Data="M -103.46414,322.11177 V 160.42965 l -90.3919,52.18752 v -47.30564 h -49.17219 l 0,75.69563 -0.45682,0.26355 0.45682,0.26355 0,75.69616 h 49.17219 v -47.30616 z" Stroke="Cyan" StrokeThickness="8" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"/>
+        <!--<TextBlock Name="WhatPlaying" Text="What is Currently Playing" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+
+        <Grid Name="PlayerControls">
+            <Grid VerticalAlignment="Top" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button Name="ExitButton" Style="{StaticResource ButtonNoBackground}" HorizontalAlignment="Right" Height="35" Width="35">
+                    <Path Stretch="Fill" Data="M 77.491653,107.63381 33.659556,63.801714 55.575604,41.885669 99.407702,85.717767 143.2398,41.885668 l 21.91605,21.91605 -43.8321,43.832102 43.83246,43.83246 -21.91604,21.91605 -43.832467,-43.83247 -43.832098,43.8321 -21.916049,-21.91605 z" Fill="{DynamicResource ToneBrush}" Stroke="{DynamicResource ToneBrush}" StrokeThickness="5" StrokeLineJoin="Round"/>
                 </Button>
-                <Button Padding="10" Style="{StaticResource ButtonNoBackground}">
-                    <Path x:Name="PlayButtonPath" Stretch="Fill" Fill="Cyan" Data="M 36.481207,225.89455 V 64.212604 L 176.50188,145.05358 Z" Stroke="Cyan" StrokeThickness="15" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"/>
+                <Button Style="{StaticResource ButtonNoBackground}" HorizontalAlignment="Left" Height="35" Width="40">
+                    <Path Stretch="Fill" Data="m -330.04883,449.73633 -248.49614,248.49609 248.49804,248.49805 82.83204,-82.83203 -89.94922,-89.94922 h 482.8789 V 622.51953 h -482.88281 l 89.95117,-89.95117 z" Fill="{DynamicResource ToneBrush}" Stroke="{DynamicResource ToneBrush}" StrokeThickness="4" StrokeLineJoin="Round"/>
                 </Button>
-                <Button Padding="10" Style="{StaticResource ButtonNoBackground}">
-                    <Path x:Name="NextButtonPath" Stretch="Fill" Fill="Cyan" Data="M 137.88086 242.69336 L 137.88086 853.77539 L 479.51953 656.53125 L 479.51953 835.32422 L 665.36719 835.32422 L 665.36719 549.23047 L 667.09375 548.23438 L 665.36719 547.23828 L 665.36719 261.14258 L 479.51953 261.14258 L 479.51953 439.9375 L 137.88086 242.69336 z " Stroke="Cyan" StrokeThickness="8" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"/>
-                </Button>
-            </StackPanel>
-            
+                <TextBlock Name="CurrentPlayingDisplay" Text="This Anime is Playing" HorizontalAlignment="Center" FontFamily="Trebuchet MS" FontWeight="Bold" FontSize="22" Foreground="White"/>
+                <TextBlock Name="EndsAtDisplay" Grid.Row="1" Text="Ends At:" HorizontalAlignment="Right" Foreground="White" FontSize="60"/>
+            </Grid>
+
+            <Grid Height="100" VerticalAlignment="Bottom" Background="#4C000000">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+
+                <Slider Name="SeekBar" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" Value="{Binding Position.TotalSeconds, ElementName=AnimeMediaPlayer, Mode=OneWay}"/>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,8" HorizontalAlignment="Left">
+                    <Button Padding="10" Style="{StaticResource ButtonNoBackground}" Margin="50,0,0,0" Focusable="False" Click="PreviousButton_Click">
+                        <Path x:Name="PreviousButtonPath" Stretch="Fill" Data="M -103.46414,322.11177 V 160.42965 l -113.82642,52.18752 v -47.30564 l -25.73767,0 v 75.69563 l -0.45682,0.26355 0.45682,0.26355 v 75.69616 l 25.73767,0 v -47.30616 z" Stroke="Cyan" StrokeThickness="12" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" Fill="{DynamicResource ToneBrush}"/>
+                    </Button>
+                    <Button Name="PlayButton" Padding="10" Style="{StaticResource ButtonNoBackground}" Margin="50,0,0,0" Focusable="False" Click="PlayButton_Click">
+                        <Path x:Name="PlayButtonPath" Stretch="Fill" Data="M 36.481207,225.89455 V 64.212604 L 176.50188,145.05358 Z" Stroke="Cyan" StrokeThickness="20" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" Fill="{DynamicResource ToneBrush}"/>
+                    </Button>
+                    <Button Padding="10" Style="{StaticResource ButtonNoBackground}" Margin="50,0,0,0" Focusable="False" Click="NextButton_Click">
+                        <Path x:Name="NextButtonPath" Stretch="Fill" Data="M 137.88086,242.69336 V 853.77539 L 571.98941,656.53125 v 178.79297 l 93.37778,0 V 549.23047 l 1.72656,-0.99609 -1.72656,-0.9961 v -286.0957 l -93.37778,0 V 439.9375 Z " Stroke="Cyan" StrokeThickness="12" StrokeLineJoin="Round" RenderTransformOrigin="0.5,0.5" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" Fill="{DynamicResource ToneBrush}"/>
+                    </Button>
+                </StackPanel>
+                <TextBlock Name="PlayTime" Text="1:20:3/2:2:34" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="72" Foreground="White" Margin="0,0,17,0"/>
+            </Grid>
         </Grid>
+
+        <Path Name="PlayButtonPathScreen" Stretch="Fill" Fill="{DynamicResource ToneBrush}" Data="m 110.18298,102.27672 a 66.901787,66.901787 0 0 0 -66.901848,66.90186 66.901787,66.901787 0 0 0 66.901848,66.90186 66.901787,66.901787 0 0 0 66.90185,-66.90186 66.901787,66.901787 0 0 0 -66.90185,-66.90186 z m -16.391248,38.51134 24.587128,14.19552 24.58714,14.195 -24.58714,14.19551 -24.587128,14.19552 v -28.39103 z" Stroke="#00000000" StrokeThickness="3" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Opacity="0">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+
+        <Path Name="PauseButtonPathScreen" Stretch="Fill" Fill="{DynamicResource ToneBrush}" Data="M -408.92211,-122.0785 A 112.78772,112.78772 0 0 0 -521.71005,-9.2910715 112.78772,112.78772 0 0 0 -408.92211,103.49687 112.78772,112.78772 0 0 0 -296.13469,-9.2910715 112.78772,112.78772 0 0 0 -408.92211,-122.0785 Z m -51.58185,45.291807 h 37.94961 V 58.205066 h -37.94961 z m 65.21358,0 h 37.94963 V 58.205066 h -37.94963 z" Stroke="#00000000" StrokeThickness="3" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Opacity="0">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+
+        <Border x:Name="border" Width="350" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5" Background="#00000000">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Border.RenderTransform>
+            <ListBox Name="EpisodesList" ItemsSource="{Binding}"  BorderBrush="{x:Null}" Background="#B2292929" Margin="10,0,0,0" ItemTemplate="{StaticResource Playing_EpisodesDisplay}" ItemContainerStyle="{StaticResource EpisodeDisplayStyle}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"></ListBox>
+            <Border.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.MouseEnter">
+                    <BeginStoryboard Storyboard="{StaticResource ShowEpisodesBar}"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="FrameworkElement.MouseLeave">
+                    <BeginStoryboard Storyboard="{StaticResource HideEpisodesBar}"/>
+                </EventTrigger>
+            </Border.Triggers>
+        </Border>
     </Grid>
 </UserControl>

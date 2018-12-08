@@ -60,12 +60,12 @@
     <Storyboard x:Key="HidePlayButton">
         <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="PlayButtonPath">
             <EasingColorKeyFrame KeyTime="0" Value="#FF60D3D3"/>
-            <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#00000000"/>
+            <EasingColorKeyFrame KeyTime="0:0:0.1" Value="#00000000"/>
         </ColorAnimationUsingKeyFrames>
     </Storyboard>
 
 
-    
+
 
 
 
@@ -78,7 +78,7 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Border BorderBrush="{StaticResource ToneBrush}" CornerRadius="0" BorderThickness="1" Padding="0" SnapsToDevicePixels="True" Margin="2">
-                        
+
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -88,6 +88,7 @@
     <Style TargetType="Button" x:Key="ButtonNoBackground">
         <Setter Property="Background" Value="#00932D2D"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="BorderBrush" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -113,17 +114,17 @@
                         <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" CornerRadius="2"/>
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
                     </Grid>
-                    
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
-    
+
+
 
     <DataTemplate x:Key="AnimeDisplayTemplate">
         <Grid>
-            <Grid Height="120" Width="90" >
+            <Grid Height="120" Width="90" Margin="0,5" >
                 <Image Source="{Binding ImagePath, Converter={StaticResource ImageLocationConverter}}" Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom" Foreground="White" TextWrapping="WrapWithOverflow" LineStackingStrategy="MaxHeight" TextAlignment="Center" FontWeight="Bold" LineHeight="Auto" MaxHeight="60" FontStretch="Normal" TextTrimming="CharacterEllipsis" Background="#99000000"/>
                 <Grid Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left">
@@ -168,6 +169,20 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="Playing_EpisodesDisplay">
+        <Grid>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding EpisodeNumber, StringFormat='Episode 0'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                <TextBlock Text="{Binding EpisodePath}" HorizontalAlignment="Stretch" TextAlignment="Center" TextTrimming="CharacterEllipsis" FontSize="10" Background="{x:Null}" Foreground="#FFDADADA"/>
+                <Border Padding="6,2" HorizontalAlignment="Right" Background="Black">
+                    <TextBlock Text="{Binding Status}" Foreground="White"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+
+
     <Style x:Key="AnimeItemDisplay" TargetType="{x:Type ListBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -185,7 +200,40 @@
                         <Trigger Property="IsSelected" Value="true">
                             <Setter Property="Background" Value="{StaticResource HighlightBrush}" TargetName="Border"/>
                         </Trigger>
-                            
+
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="EpisodeDisplayStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource SimpleFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid SnapsToDevicePixels="true">
+                        <Border x:Name="Border" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" />
+                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+
+                        <!-- Change IsSelected SelectedBackgroundBrush to set the selection color for the items -->
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" TargetName="Border" Value="#FF535353"/>
+                        </Trigger>
+
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="{StaticResource PrimaryBrush}" TargetName="Border"/>
+                        </Trigger>
+
+
+
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
                         </Trigger>
@@ -199,6 +247,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource SimpleFocusVisual}"/>
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -206,7 +255,7 @@
                     <!-- We use Grid as a root because it is easy to add more elements to customize the button -->
                     <Grid x:Name="Grid">
                         <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" CornerRadius="2"/>
-                        
+
                         <!-- Content Presenter is where the text content etc is placed by the control -->
                         <!-- The bindings are useful so that the control can be parameterized without editing the template -->
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
@@ -236,7 +285,7 @@
         </Setter>
     </Style>
 
-    
+
 
     <Style TargetType="Image" x:Key="BackgroundStyle">
         <Setter Property="Source" Value="/culTAKU;component/Icons/dark_theme_main_background.png"/>

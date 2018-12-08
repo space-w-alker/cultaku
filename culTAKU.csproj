@@ -64,12 +64,25 @@
     <Compile Include="ViewsAndControllers\AnimePlayer.xaml.cs">
       <DependentUpon>AnimePlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewsAndControllers\DetailsView.xaml.cs">
+      <DependentUpon>DetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndControllers\Extras\ContinueWatchingView.xaml.cs">
+      <DependentUpon>ContinueWatchingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewsAndControllers\Extras\StatusDisplay.xaml.cs">
       <DependentUpon>StatusDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndControllers\Extras\TopOptionsBar.xaml.cs">
+      <DependentUpon>TopOptionsBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndControllers\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Icons\SvgIcons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,7 +125,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndControllers\DetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndControllers\Extras\ContinueWatchingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndControllers\Extras\StatusDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndControllers\Extras\TopOptionsBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

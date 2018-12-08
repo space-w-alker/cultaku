@@ -18,7 +18,7 @@ namespace culTAKU.Misc
         public static culTAKU.MainWindow MainWindow;
         
 
-        public static string GetHtml(string url)
+        public static string GetHtml(string url, int totalRetry)
         {
             string html = string.Empty;
             
@@ -36,7 +36,7 @@ namespace culTAKU.Misc
                 }
                 catch (WebException e)
                 {
-                    if(retryCount == 15)
+                    if(retryCount == totalRetry)
                     {
                         return null;
                     }
@@ -57,12 +57,12 @@ namespace culTAKU.Misc
 
         public static bool IsConnectionActive()
         {
-            string returnHtml = GetHtml(AnimeListUrl);
+            string returnHtml = GetHtml(AnimeListUrl, 0);
             if (returnHtml == null) return false;
             else return true;
         }
 
-        public static string GetImage(string url, int id, bool IgnoreCurrentImage=true)
+        public static string GetImage(string url, int id, int totalRetry, bool IgnoreCurrentImage=true)
         {
             string image_location = string.Format("Image/AnimeImage-{0}.jpg", id);
 
@@ -84,7 +84,7 @@ namespace culTAKU.Misc
                     }
                     catch (WebException e)
                     {
-                        if (RetryCount == 10)
+                        if (RetryCount == totalRetry)
                         {
                             return null;
                             

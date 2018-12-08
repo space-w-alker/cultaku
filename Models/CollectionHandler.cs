@@ -38,7 +38,6 @@ namespace culTAKU.Models
                         return null;
                     }
                 }
-
             }
             return null;
         }

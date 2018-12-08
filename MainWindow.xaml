@@ -8,9 +8,8 @@
         xmlns:extras="clr-namespace:culTAKU.ViewsAndControllers.Extras"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="None" Background="{x:Null}" Closing="Window_Closing">
-    
+
     <Grid Name="mainGrid" Margin="0,2,0,0" Style="{StaticResource Background}">
-        
-        <extras:StatusDisplay x:Name="status_display"/>
+        <Grid Name="OverLayer"/>
     </Grid>
 </Window>

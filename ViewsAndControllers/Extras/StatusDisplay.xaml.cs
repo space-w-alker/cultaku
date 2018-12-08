@@ -45,11 +45,18 @@ namespace culTAKU.ViewsAndControllers.Extras
             {
 
                 string full = System.IO.Path.GetFullPath(String.Format("Icons/{0}.png",value.ToString().ToLower()));
+
                 if(full == System.IO.Path.GetFullPath("Icons/loading.png"))
                 {
-                    RotateLoadingImage.Begin(image);
+                    RotateLoadingImage.Begin(image, true);
                 }
-                else { RotateLoadingImage.Remove(image); }
+                else
+                {
+                    int m = 1;
+                    RotateLoadingImage.Remove(image);
+                    RotateLoadingImage.Stop(image);
+                    
+                }
 
 
                 image.Source = new BitmapImage(new Uri(full, UriKind.Absolute));

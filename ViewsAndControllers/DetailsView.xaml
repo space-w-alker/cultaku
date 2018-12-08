@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="culTAKU.ViewsAndControllers.DetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:culTAKU.ViewsAndControllers"
+             xmlns:converter="clr-namespace:culTAKU.Misc.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converter:ImageUriConverter x:Key="UriConverter"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="47*"/>
+            <ColumnDefinition Width="113*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Background="{DynamicResource PrimaryBrush}">
+            <StackPanel VerticalAlignment="Center">
+                <Image Height="300" Width="200" Source="{Binding ImagePath, Converter={StaticResource ImageLocationConverter}}"/>
+                <Border Padding="10" Background="White" HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" FontWeight="Bold"/>
+                </Border>
+                <Button Foreground="White" Margin="10,5" BorderBrush="{x:Null}" BorderThickness="0" Padding="1,8">Play All</Button>
+                <TextBlock Text="{Binding Synopsis}" TextAlignment="Center" TextWrapping="Wrap" Foreground="White" Padding="10,0"/>
+                
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Background="{DynamicResource SecondaryBrush}">
+            <ListBox Name="EpisodesList"  Background="{x:Null}" ItemTemplate="{StaticResource Playing_EpisodesDisplay}" ItemContainerStyle="{StaticResource EpisodeDisplayStyle}" BorderThickness="0" VerticalAlignment="Center">
+                
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>
