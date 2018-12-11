@@ -24,6 +24,7 @@ namespace culTAKU.Models
         private const string base_html_string = "https://myanimelist.net/search/all?q=";
 
         private long id;
+        private long animeListId;
         private string name;
         private string synopsis;
         private int episodes;
@@ -33,7 +34,7 @@ namespace culTAKU.Models
         public bool ImageFetched { get; set; }
         public bool DetailsFetched { get; set; }
 
-        public AnimeEpisode LastPlayed;
+        private AnimeEpisode lastPlayed;
 
         public long Id
         {
@@ -44,6 +45,19 @@ namespace culTAKU.Models
                 {
                     id = value;
                     OnPropertyChanged("Id");
+                }
+            }
+        }
+
+        public long AnimeListId
+        {
+            get { return animeListId; }
+            set
+            {
+                if (animeListId != value)
+                {
+                    animeListId = value;
+                    OnPropertyChanged("AnimeListId");
                 }
             }
         }
@@ -112,8 +126,14 @@ namespace culTAKU.Models
             }
         }
 
+        public AnimeEpisode LastPlayed
+        {
+            get { return lastPlayed; }
+            set { lastPlayed = value; OnPropertyChanged("LastPlayed"); }
+        }
+
         public bool IsPathExists { get { return Directory.Exists(anime_path); } }
-        public bool IsImagePathExists { get { return Directory.Exists(ImagePath); } }
+        public bool IsImagePathExists { get { return File.Exists(ImagePath); } }
         public bool IsKnownAnime { get; set; }
 
         public Anime() { }
@@ -173,7 +193,7 @@ namespace culTAKU.Models
             }
         }
 
-        private void FetchDetails()
+        public void FetchDetails()
         {
             Regex get_target_anime_url = new Regex("information(.|\n)*?href=\"(?<link>.*?)\"", RegexOptions.IgnoreCase);
             Regex get_anime_id = new Regex(@"\d+");
@@ -215,7 +235,7 @@ namespace culTAKU.Models
             }
 
 
-            Id = anime_id;
+            AnimeListId = anime_id;
             Synopsis = _synopsis;
             Rating = _rating;
             DetailsFetched = true;

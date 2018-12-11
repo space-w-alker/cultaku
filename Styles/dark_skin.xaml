@@ -169,16 +169,42 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="ContinueWatchingDisplayTemplate">
+        <Grid>
+            <Grid Height="120" Width="90" Margin="0,5" >
+                <Image Source="{Binding ImagePath, Converter={StaticResource ImageLocationConverter}}" Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom" Foreground="White" TextWrapping="WrapWithOverflow" LineStackingStrategy="MaxHeight" TextAlignment="Center" FontWeight="Bold" LineHeight="Auto" MaxHeight="60" FontStretch="Normal" TextTrimming="CharacterEllipsis" Background="#99000000"/>
+                <Grid Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <Path Data="M -93.781992,209.13172 V -50.271211 H 130.86754 Z" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="{DynamicResource SecondaryBrush}" Stretch="Fill"/>
+                    <TextBlock Text="{Binding Rating, StringFormat='0.00'}" Foreground="White" FontWeight="Bold" Padding="2" FontSize="9" Margin="0,5,0,0"/>
+                </Grid>
+            </Grid>
+            
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="Playing_EpisodesDisplay">
         <Grid>
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="{Binding EpisodeNumber, StringFormat='Episode 0'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="White"/>
                 <TextBlock Text="{Binding EpisodePath}" HorizontalAlignment="Stretch" TextAlignment="Center" TextTrimming="CharacterEllipsis" FontSize="10" Background="{x:Null}" Foreground="#FFDADADA"/>
-                <Border Padding="6,2" HorizontalAlignment="Right" Background="Black">
+                <Border Name="StatusBorder" Padding="6,2" HorizontalAlignment="Right" Background="Black">
                     <TextBlock Text="{Binding Status}" Foreground="White"/>
                 </Border>
             </StackPanel>
         </Grid>
+
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Status}" Value="NEW">
+                <Setter Property="Background" Value="#FF000087" TargetName="StatusBorder"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="WATCHING">
+                <Setter Property="Background" Value="#FFB68400" TargetName="StatusBorder"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="WATCHED">
+                <Setter Property="Background" Value="#FF004D15" TargetName="StatusBorder"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
     </DataTemplate>
 
 
@@ -193,6 +219,33 @@
                     <Grid SnapsToDevicePixels="true">
                         <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
                         <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+
+                        <!-- Change IsSelected SelectedBackgroundBrush to set the selection color for the items -->
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="{StaticResource HighlightBrush}" TargetName="Border"/>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AnimeItemDisplayContinueWatching" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource SimpleFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid SnapsToDevicePixels="true">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0"/>
                     </Grid>
                     <ControlTemplate.Triggers>
 

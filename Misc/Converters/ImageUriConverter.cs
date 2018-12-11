@@ -13,10 +13,16 @@ namespace culTAKU.Misc.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if((string)value == "Image/AnimeImage-387.jpg")
             {
-                return Path.GetFullPath("/Icons/unknown.png");
+                int j = 0;
             }
+
+            if (value == null || !File.Exists((string)value))
+            {
+                return Path.GetFullPath("Icons/unknown.png");   
+            }
+
             return Path.GetFullPath((string)value);
         }
 

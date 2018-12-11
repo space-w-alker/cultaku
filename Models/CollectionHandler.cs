@@ -16,7 +16,15 @@ namespace culTAKU.Models
         public static void SaveMyCollectionFile(AnimeCollection MyAnimeCollection)
         {
             Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//MyCollection");
-            Stream file = File.Create(filePath);
+            Stream file;
+            try
+            {
+                file = File.Create(filePath);
+            }
+            catch (System.IO.IOException e)
+            {
+                return;
+            }
             BinaryFormatter serializer = new BinaryFormatter();
             serializer.Serialize(file, MyAnimeCollection);
         }

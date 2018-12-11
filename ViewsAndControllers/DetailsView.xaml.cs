@@ -27,7 +27,15 @@ namespace culTAKU.ViewsAndControllers
         public DetailsView()
         {
             InitializeComponent();
+            EpisodesList.MouseDoubleClick += EpisodesList_MouseDoubleClick;
         }
 
+        private void EpisodesList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (EpisodesList.SelectedItem == null) return;
+            Models.Anime selected = ((Models.AnimeEpisode)EpisodesList.SelectedItem).ParentAnime;
+
+            Misc.Miscelleneous.MainWindow.PlayAnime(selected.Id, EpisodesList.SelectedIndex);
+        }
     }
 }

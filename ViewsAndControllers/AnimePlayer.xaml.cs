@@ -35,6 +35,9 @@ namespace culTAKU.ViewsAndControllers
         private DispatcherTimer Timer;
         private DateTime SeekUpdateTimeStamp;
         private long IdleTime;
+        private double secondsPosition;
+        private bool ignoreUpdate;
+        private object lockObject;
         public PLAYER_STATE PlayerState;
         
 
@@ -56,9 +59,12 @@ namespace culTAKU.ViewsAndControllers
             AnimeMediaPlayer.LoadedBehavior = MediaState.Manual;
             AnimeMediaPlayer.UnloadedBehavior = MediaState.Manual;
             Burst = Resources["Burst"] as Storyboard;
+            lockObject = new object();
+            ignoreUpdate = false;
+            secondsPosition = 0;
 
             Timer = new DispatcherTimer();
-            Timer.Interval = TimeSpan.FromMilliseconds(911);
+            Timer.Interval = TimeSpan.FromMilliseconds(750);
             Timer.Tick += Timer_Tick;
             
             
@@ -69,9 +75,12 @@ namespace culTAKU.ViewsAndControllers
             AnimeMediaPlayer.PreviewMouseLeftButtonUp += AnimeMediaPlayer_PreviewMouseLeftButtonUp;
             AnimeMediaPlayer.PreviewMouseMove += AnimeMediaPlayer_PreviewMouseMove;
             AnimeMediaPlayer.SourceUpdated += AnimeMediaPlayer_SourceUpdated;
+            
             SeekBar.ValueChanged += SeekBar_ValueChanged;
             EpisodesList.MouseDoubleClick += EpisodesList_MouseDoubleClick;
         }
+
+        
 
         private void EpisodesList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -80,12 +89,14 @@ namespace culTAKU.ViewsAndControllers
 
         private void AnimeMediaPlayer_PreviewMouseMove(object sender, MouseEventArgs e)
         {
+            
             PlayerControls.Visibility = Visibility.Visible;
             IdleTime = 0;
         }
 
         private void AnimeMediaPlayer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            
             ShowHideControls();
         }
 
@@ -106,17 +117,35 @@ namespace culTAKU.ViewsAndControllers
                 return;
             }
 
-            if (DateTime.Now.Subtract(SeekUpdateTimeStamp).TotalMilliseconds > 211)
+            if (DateTime.Now.Subtract(SeekUpdateTimeStamp).TotalMilliseconds > 300)
             {
-                AnimeMediaPlayer.Position = TimeSpan.FromSeconds(SeekBar.Value);
-                SeekUpdateTimeStamp = DateTime.Now;
+                lock (lockObject)
+                {
+                    if (ignoreUpdate)
+                    {
+                        ignoreUpdate = false;
+                        return;
+                    }
+                    secondsPosition = SeekBar.Value;
+                    SeekUpdateTimeStamp = DateTime.Now;
+                }
             }
             
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            SeekBar.Value = AnimeMediaPlayer.Position.TotalSeconds;
+            lock (lockObject)
+            {
+                ignoreUpdate = true;
+                if (secondsPosition > 0)
+                {      
+                    AnimeMediaPlayer.Position = TimeSpan.FromSeconds(secondsPosition); 
+                    secondsPosition = 0;
+                }
+                SeekBar.Value = AnimeMediaPlayer.Position.TotalSeconds;
+            }
+
             TimeSpan pos = AnimeMediaPlayer.Position;
             TimeSpan tot = AnimeMediaPlayer.NaturalDuration.TimeSpan;
             DateTime date = DateTime.Now;
@@ -150,24 +179,34 @@ namespace culTAKU.ViewsAndControllers
 
         public void PlayAnime(Models.Anime anime, int EpisodeNumber = -1)
         {
+            PlayerState = PLAYER_STATE.STOPPED;
             CombinedEpisodes = new ObservableCollection<Models.AnimeEpisode>(anime.ListOfEpisodes.Concat(anime.ListOfUnOrderedEpisodes));
             EpisodesList.DataContext = CombinedEpisodes;
-            AnimeMediaPlayer.Source = new Uri(CombinedEpisodes[0].EpisodePath, UriKind.Absolute);
-            PlayIndex = 0;
+            if (EpisodeNumber == -1) PlayIndex = 0;
+            else PlayIndex = EpisodeNumber;
+
+            AnimeMediaPlayer.Source = new Uri(CombinedEpisodes[PlayIndex].EpisodePath, UriKind.Absolute);
+            
             AnimeMediaPlayer.Play();
             SeekUpdateTimeStamp = DateTime.Now;
+
         }
 
 
         public void PlayNextEpisode(int index = -1)
         {
             Timer.Stop();
-            if(100.0 * AnimeMediaPlayer.Position.TotalSeconds / AnimeMediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 85)
+            if (PlayerState != PLAYER_STATE.STOPPED)
             {
-                SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHED, CombinedEpisodes[PlayIndex]);
+                
+                if (100.0 * AnimeMediaPlayer.Position.TotalSeconds / AnimeMediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 85)
+                {
+                    SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHED, CombinedEpisodes[PlayIndex]);
+                }
+                CombinedEpisodes[PlayIndex].StoppedAt = AnimeMediaPlayer.Position;
             }
-            CombinedEpisodes[PlayIndex].StoppedAt = AnimeMediaPlayer.Position;
             AnimeMediaPlayer.Stop();
+            PlayerState = PLAYER_STATE.STOPPED;
 
             if (index == -1)
             {
@@ -184,13 +223,18 @@ namespace culTAKU.ViewsAndControllers
         public void PlayPreviousEpisode()
         {
             Timer.Stop();
-            if (100.0 * AnimeMediaPlayer.Position.TotalSeconds / AnimeMediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 85)
+            if (PlayerState != PLAYER_STATE.STOPPED)
             {
-                SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHED, CombinedEpisodes[PlayIndex]);
+                if (100.0 * AnimeMediaPlayer.Position.TotalSeconds / AnimeMediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 85)
+                {
+                    SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHED, CombinedEpisodes[PlayIndex]);
+                }
+                CombinedEpisodes[PlayIndex].StoppedAt = AnimeMediaPlayer.Position;
             }
-            CombinedEpisodes[PlayIndex].StoppedAt = AnimeMediaPlayer.Position;
             AnimeMediaPlayer.Stop();
-            PlayIndex = (PlayIndex - 1) % CombinedEpisodes.Count;
+            PlayerState = PLAYER_STATE.STOPPED;
+            PlayIndex = PlayIndex - 1;
+            if (PlayIndex == -1) PlayIndex = CombinedEpisodes.Count - 1;
             AnimeMediaPlayer.Source = new Uri(CombinedEpisodes[PlayIndex].EpisodePath, UriKind.Absolute);
             AnimeMediaPlayer.Play();
         }
@@ -244,13 +288,16 @@ namespace culTAKU.ViewsAndControllers
         public void Closing()
         {
             Timer.Stop();
-            if (100.0 * AnimeMediaPlayer.Position.TotalSeconds / AnimeMediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 85)
+            if (PlayerState != PLAYER_STATE.STOPPED)
             {
-                SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHED, CombinedEpisodes[PlayIndex]);
+                if (100.0 * AnimeMediaPlayer.Position.TotalSeconds / AnimeMediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 85)
+                {
+                    SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHED, CombinedEpisodes[PlayIndex]);
+                }
+                Misc.Miscelleneous.MainWindow.MyAnimeCollection.AddToContinueWatching(CombinedEpisodes[PlayIndex]);
+                CombinedEpisodes[PlayIndex].StoppedAt = AnimeMediaPlayer.Position;
+                CombinedEpisodes[PlayIndex].ParentAnime.LastPlayed = CombinedEpisodes[PlayIndex];
             }
-            Misc.Miscelleneous.MainWindow.MyAnimeCollection.AddToContinueWatching(CombinedEpisodes[PlayIndex]);
-            CombinedEpisodes[PlayIndex].StoppedAt = AnimeMediaPlayer.Position;
-            CombinedEpisodes[PlayIndex].ParentAnime.LastPlayed = CombinedEpisodes[PlayIndex];
             Models.CollectionHandler.SaveMyCollectionFile(Misc.Miscelleneous.MainWindow.MyAnimeCollection);
             AnimeMediaPlayer.Close();
             CombinedEpisodes = null;

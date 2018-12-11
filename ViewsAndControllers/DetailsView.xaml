@@ -33,5 +33,8 @@
                 
             </ListBox>
         </Grid>
+        <Button Name="BackButton" Style="{StaticResource ButtonNoBackground}" HorizontalAlignment="Left" Height="35" Width="40" VerticalAlignment="Top">
+            <Path Stretch="Fill" Data="m -330.04883,449.73633 -248.49614,248.49609 248.49804,248.49805 82.83204,-82.83203 -89.94922,-89.94922 h 482.8789 V 622.51953 h -482.88281 l 89.95117,-89.95117 z" Fill="{DynamicResource ToneBrush}" Stroke="{DynamicResource ToneBrush}" StrokeThickness="4" StrokeLineJoin="Round"/>
+        </Button>
     </Grid>
 </UserControl>

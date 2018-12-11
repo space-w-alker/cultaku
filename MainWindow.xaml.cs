@@ -32,8 +32,10 @@ namespace culTAKU
         internal HomeView HomeViewObject;
         internal StatusDisplay statusDisplay;
         internal AnimePlayer Player;
+        internal ContinueWatchingView ContinueWatching;
         internal bool isConnected;
-        internal APP_STATE AppState { get; set; }
+        private APP_STATE appState;
+        internal APP_STATE AppState {get { return appState; } set { appState = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AppState")); } }
         ICollectionView animeDisplayView;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -61,41 +63,105 @@ namespace culTAKU
             }
             
             Misc.Miscelleneous.MainWindow = this;
-
+            TopBar = new TopOptionsBar();
             HomeViewObject = new HomeView(MyAnimeCollection);
             mainGrid.Children.Insert(0, HomeViewObject);
 
             Player = new AnimePlayer();
 
-            TopBar = new TopOptionsBar();
-            OverLayer.Children.Add(TopBar);
+            
+            if(MyAnimeCollection.ContinueWatching.Count > 2)
+            {
+                ContinueWatching = new ContinueWatchingView();
+                //ContinueWatching.LoadContinueWatching();
+                HomeViewObject.HomeViewGrid.Children.Insert(0, ContinueWatching);
+                ContinueWatching.ExitButton.Click += ExitButton_Click1;
+            }
+            HomeViewObject.MainGrid.Children.Add(TopBar);
             animeDisplayView = CollectionViewSource.GetDefaultView(HomeViewObject.DataContext);
+            PropertyChanged += MainWindow_PropertyChanged;
             TopBar.SearchBar.TextChanged += SearchBar_TextChanged;
+            TopBar.SortOption.SelectionChanged += SortOption_SelectionChanged;
             HomeViewObject.anime_list.MouseDoubleClick += Anime_list_MouseDoubleClick;
+            HomeViewObject.anime_list.KeyUp += Anime_list_KeyUp;
             Player.ExitButton.Click += ExitButton_Click;
+            
             AppState = APP_STATE.HOME;
 
         }
 
+        
+
+        private void ExitButton_Click1(object sender, RoutedEventArgs e)
+        {
+            HomeViewObject.HomeViewGrid.Children.RemoveAt(0);
+            ContinueWatching.CloseAll();
+            ContinueWatching = null;
+        }
+
+        private void MainWindow_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "AppState")
+            {
+                if (ContinueWatching == null) return;
+                if(AppState == APP_STATE.HOME)
+                {
+                    ContinueWatching.LoadContinueWatching();
+                }
+                else { ContinueWatching.CloseAll(); }
+            }
+        }
+
+        private void Anime_list_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Return)
+            {
+                OpenDetails();
+            }
+        }
+
         private void Anime_list_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Anime selected = (Anime)HomeViewObject.anime_list.SelectedItem;
-            DetailsView details = new DetailsView();
-            details.DataContext = selected;
-            details.EpisodesList.DataContext = selected.ListOfEpisodes;
-            details.EpisodesList.ItemsSource = selected.ListOfEpisodes;
+            OpenDetails();
+        }
 
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button back_button = (Button)sender;
+            back_button.Click -= BackButton_Click;
             mainGrid.Children.RemoveAt(0);
-            mainGrid.Children.Insert(0, details);
-            AppState = APP_STATE.DETAILS_VIEW;
+            mainGrid.Children.Insert(0, HomeViewObject);
+            AppState = APP_STATE.HOME;
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             Player.Closing();
             mainGrid.Children[0].Visibility = Visibility.Visible;
-            AppState = APP_STATE.HOME;
+            if(mainGrid.Children[0].GetType() == typeof(HomeView)) { AppState = APP_STATE.HOME; }
+            else if(mainGrid.Children.GetType() == typeof(DetailsView)) { AppState = APP_STATE.DETAILS_VIEW; }
             mainGrid.Children.RemoveAt(1);
+        }
+
+
+        private void SortOption_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selection = ((TextBlock)TopBar.SortOption.SelectedItem).Text;
+            string propName = "Name";
+            switch (selection)
+            {
+                case "Name":
+                    propName = "Name";
+                    break;
+                case "Rating":
+                    propName = "Rating";
+                    break;
+                case "Number of Episodes":
+                    propName = "Episodes";
+                    break;
+            }
+            animeDisplayView.SortDescriptions.Clear();
+            animeDisplayView.SortDescriptions.Add(new SortDescription(propName, ListSortDirection.Descending));
         }
 
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
@@ -121,13 +187,27 @@ namespace culTAKU
             {
                 if (anime.Id == animeId)
                 {
-                    Player.PlayAnime(anime);
+                    Player.PlayAnime(anime, EpisodeNumber);
                     //mainGrid.Children.RemoveAt(0);
                     mainGrid.Children[0].Visibility = Visibility.Collapsed;
                     mainGrid.Children.Insert(1, Player);
                     AppState = APP_STATE.PLAYING;
                 }
             }
+        }
+
+        public void OpenDetails()
+        {
+            Anime selected = (Anime)HomeViewObject.anime_list.SelectedItem;
+            DetailsView details = new DetailsView();
+            details.BackButton.Click += BackButton_Click;
+            details.DataContext = selected;
+            details.EpisodesList.DataContext = selected.ListOfEpisodes;
+            details.EpisodesList.ItemsSource = selected.ListOfEpisodes;
+
+            mainGrid.Children.RemoveAt(0);
+            mainGrid.Children.Insert(0, details);
+            AppState = APP_STATE.DETAILS_VIEW;
         }
 
         public void CheckInternet()

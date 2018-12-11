@@ -5,11 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:culTAKU.ViewsAndControllers.Extras"
              mc:Ignorable="d" 
-             Height="400" Width="auto" d:DesignWidth="800">
-    <Grid>
+             Height="600" Width="auto" d:DesignWidth="800">
+    <Grid Margin="0,30" Background="{DynamicResource BlackBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="140"/>
         </Grid.RowDefinitions>
+        <Grid Background="{DynamicResource BlackBrush}">
+            <MediaElement Name="PreviewContinuePlaying" Margin="10"/>
+        </Grid>
+        <TextBlock Name="ContinueWatchingText" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontSize="20" Foreground="White" Margin="20,20,0,0" Background="#33000000" Padding="10,5">Continue Watching</TextBlock>
+        <Button Name="ExitButton" Style="{StaticResource ButtonNoBackground}" HorizontalAlignment="Right" Height="35" Width="35" VerticalAlignment="Top" Margin="0,20,20,0">
+            <Path Stretch="Fill" Data="M 77.491653,107.63381 33.659556,63.801714 55.575604,41.885669 99.407702,85.717767 143.2398,41.885668 l 21.91605,21.91605 -43.8321,43.832102 43.83246,43.83246 -21.91604,21.91605 -43.832467,-43.83247 -43.832098,43.8321 -21.916049,-21.91605 z" Fill="{DynamicResource ToneBrush}" Stroke="{DynamicResource ToneBrush}" StrokeThickness="5" StrokeLineJoin="Round"/>
+        </Button>
+
+        <ListBox Name="ListContinue" Background="{x:Null}" Grid.Row="1" ItemTemplate="{StaticResource ContinueWatchingDisplayTemplate}" BorderBrush="{x:Null}" BorderThickness="0" ItemContainerStyle="{StaticResource AnimeItemDisplayContinueWatching}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+        <Button Grid.Row="1" Content="Continue Watching" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="12" Padding="10" BorderThickness="0" BorderBrush="{x:Null}" Foreground="White"/>
+
     </Grid>
 </UserControl>

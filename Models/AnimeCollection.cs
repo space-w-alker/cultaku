@@ -60,6 +60,7 @@ namespace culTAKU.Models
         {
             RemoveFromContinueWatching(episode);
             ContinueWatching.Insert(0, episode);
+            if (ContinueWatching.Count > 7) ContinueWatching.RemoveAt(ContinueWatching.Count - 1);
         }
 
         public void RemoveFromContinueWatching(AnimeEpisode episode)
