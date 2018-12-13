@@ -17,13 +17,19 @@
             <ColumnDefinition Width="47*"/>
             <ColumnDefinition Width="113*"/>
         </Grid.ColumnDefinitions>
-        <Grid Background="{DynamicResource PrimaryBrush}">
+        <Grid Background="#FF1D1D1D">
             <StackPanel VerticalAlignment="Center">
                 <Image Height="300" Width="200" Source="{Binding ImagePath, Converter={StaticResource ImageLocationConverter}}"/>
                 <Border Padding="10" Background="White" HorizontalAlignment="Center" Margin="0,15,0,0">
                     <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" FontWeight="Bold"/>
                 </Border>
-                <Button Foreground="White" Margin="10,5" BorderBrush="{x:Null}" BorderThickness="0" Padding="1,8">Play All</Button>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    <Button Name="PlayAllButton" Foreground="White" Margin="2,5" BorderBrush="{x:Null}" BorderThickness="0" Padding="8">Play All</Button>
+                    <Button Name="ContinueButton" Foreground="White" Margin="2,5" BorderBrush="{x:Null}" BorderThickness="0" Padding="8">Continue</Button>
+                    <Button Name="FetchDetailsButton" Foreground="White" Margin="2,5" BorderBrush="{x:Null}" BorderThickness="0" Padding="8">Fetch Details</Button>
+                </StackPanel>
+                
                 <TextBlock Text="{Binding Synopsis}" TextAlignment="Center" TextWrapping="Wrap" Foreground="White" Padding="10,0"/>
                 
             </StackPanel>

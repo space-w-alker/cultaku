@@ -110,14 +110,7 @@ namespace culTAKU.ViewsAndControllers
                     Misc.Miscelleneous.MainWindow.statusDisplay.DisplayText = "Connection Error. Unable to fetch Anime details";
                     Misc.Miscelleneous.MainWindow.statusDisplay.DisplayImagePath = Extras.StatusDisplay.StatusType.ERROR;
                     isFetching = false;
-                    ThreadPool.QueueUserWorkItem(_ =>
-                    {
-                        Thread.Sleep(5000);
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            Misc.Miscelleneous.MainWindow.OverLayer.Children.Remove(Misc.Miscelleneous.MainWindow.statusDisplay);
-                        }));
-                    });
+                    Misc.Miscelleneous.MainWindow.OverLayer.Children.Remove(Misc.Miscelleneous.MainWindow.statusDisplay);
                 }
             }
         }
@@ -134,14 +127,7 @@ namespace culTAKU.ViewsAndControllers
                     isFetching = false;
                     Misc.Miscelleneous.MainWindow.statusDisplay.DisplayText = "Done";
                     Misc.Miscelleneous.MainWindow.statusDisplay.DisplayImagePath = Extras.StatusDisplay.StatusType.CAUTION;
-                    ThreadPool.QueueUserWorkItem(_ =>
-                    {
-                        Thread.Sleep(5000);
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            Misc.Miscelleneous.MainWindow.OverLayer.Children.Remove(Misc.Miscelleneous.MainWindow.statusDisplay);
-                        }));
-                    });
+                    Misc.Miscelleneous.MainWindow.OverLayer.Children.Remove(Misc.Miscelleneous.MainWindow.statusDisplay);
                 }
             }
         }

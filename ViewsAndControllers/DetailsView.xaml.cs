@@ -28,14 +28,27 @@ namespace culTAKU.ViewsAndControllers
         {
             InitializeComponent();
             EpisodesList.MouseDoubleClick += EpisodesList_MouseDoubleClick;
+            ContinueButton.Click += ContinueButton_Click;
+        }
+
+        private void ContinueButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (EpisodesList.Items.Count < 1) return;
+            Models.Anime selected = ((Models.AnimeEpisode)EpisodesList.Items[0]).ParentAnime;
+            if (selected.LastPlayed == null) return;
+            Misc.Miscelleneous.MainWindow.PlayAnime(selected.Id, selected.ListOfEpisodes.IndexOf(selected.LastPlayed), true);
         }
 
         private void EpisodesList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+
             if (EpisodesList.SelectedItem == null) return;
             Models.Anime selected = ((Models.AnimeEpisode)EpisodesList.SelectedItem).ParentAnime;
 
             Misc.Miscelleneous.MainWindow.PlayAnime(selected.Id, EpisodesList.SelectedIndex);
+
         }
+
+        
     }
 }

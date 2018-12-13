@@ -175,19 +175,23 @@ namespace culTAKU.ViewsAndControllers
             Toggle_Play_Pause();
         }
 
-        
 
-        public void PlayAnime(Models.Anime anime, int EpisodeNumber = -1)
+
+        public void PlayAnime(Models.Anime anime, int EpisodeIndex = -1, bool isContinue = false)
         {
             PlayerState = PLAYER_STATE.STOPPED;
             CombinedEpisodes = new ObservableCollection<Models.AnimeEpisode>(anime.ListOfEpisodes.Concat(anime.ListOfUnOrderedEpisodes));
             EpisodesList.DataContext = CombinedEpisodes;
-            if (EpisodeNumber == -1) PlayIndex = 0;
-            else PlayIndex = EpisodeNumber;
+            if (EpisodeIndex == -1) PlayIndex = 0;
+            else PlayIndex = EpisodeIndex;
 
             AnimeMediaPlayer.Source = new Uri(CombinedEpisodes[PlayIndex].EpisodePath, UriKind.Absolute);
             
             AnimeMediaPlayer.Play();
+            if (isContinue)
+            {
+                AnimeMediaPlayer.Position = CombinedEpisodes[PlayIndex].StoppedAt.Subtract(TimeSpan.FromSeconds(3));
+            }
             SeekUpdateTimeStamp = DateTime.Now;
 
         }

@@ -59,10 +59,9 @@
                     <!--<Path Stretch="Fill" Data="M 268.39944,-342.3036 A 169.85579,169.85579 0 0 1 438.2549,-172.44813 169.85579,169.85579 0 0 1 268.39944,-2.5926553 169.85579,169.85579 0 0 1 167.86428,-35.778205 l -27.41797,27.4179697 c 3.58918,5.48868 6.19148,11.18531 7.05079,16.27149 4.68454,27.7276403 3.8857,28.8658703 -78.894545,112.4667853 -49.53893,50.03004 -80.8825,79.33949 -88.77148,83.00977 -15.44054,7.18356 -27.17821,7.17642 -43.03711,-0.0254 -16.4629,-7.47611 -28.95102,-24.09729 -30.86523,-41.08008 -2.94086,-26.09115 1.0532,-31.72428 76.37109,-107.736325 38.58988,-38.94556 75.39742,-74.43763 81.79492,-78.87109 13.69697,-9.49201 34.02738,-12.559 49.468755,-7.46289 0.9363,0.309 1.88645,0.6878 2.84375,1.125 l 27.01172,-27.01172 A 169.85579,169.85579 0 0 1 98.543965,-172.44813 169.85579,169.85579 0 0 1 268.39944,-342.3036 Z m 0,45.55078 A 124.30356,124.30356 0 0 0 144.09475,-172.44813 124.30356,124.30356 0 0 0 268.39944,-48.145395 124.30356,124.30356 0 0 0 392.70217,-172.44813 124.30356,124.30356 0 0 0 268.39944,-296.75282 Z" Fill="{DynamicResource BlackBrush}" Stroke="{DynamicResource BlackBrush}"/>-->
                 </Button>
                 <Label Content="Sort By:" VerticalAlignment="Center" Margin="30,0,0,0" FontSize="16" Foreground="White"/>
-                <ComboBox x:Name="SortOption" SelectedIndex="2" VerticalAlignment="Center" BorderBrush="{x:Null}" Background="{DynamicResource PrimaryBrush}" Margin="0,0,70,0" FontSize="16">
+                <ComboBox x:Name="SortOption" SelectedIndex="1" VerticalAlignment="Center" BorderBrush="{x:Null}" Background="{DynamicResource PrimaryBrush}" Margin="0,0,70,0" FontSize="16">
                     <TextBlock>Name</TextBlock>
                     <TextBlock>Rating</TextBlock>
-                    <TextBlock>Number of Episodes</TextBlock>
                 </ComboBox>
             </StackPanel>
 

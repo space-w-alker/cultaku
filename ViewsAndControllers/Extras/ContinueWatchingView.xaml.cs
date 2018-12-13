@@ -37,6 +37,16 @@ namespace culTAKU.ViewsAndControllers.Extras
             ListContinue.DataContext = ContinueWatchingList;
             ListContinue.ItemsSource = ContinueWatchingList;
             ListContinue.SelectionChanged += ListContinue_SelectionChanged;
+            ContinueWatchingButton.Click += ContinueWatchingButton_Click;
+        }
+
+        private void ContinueWatchingButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(ListContinue.SelectedItem != null)
+            {
+                Models.Anime anime = (Models.Anime)ListContinue.SelectedItem;
+                Misc.Miscelleneous.MainWindow.PlayAnime(anime.Id, anime.ListOfEpisodes.IndexOf(anime.LastPlayed), true);
+            }
         }
 
         private void Timer_Tick(object sender, EventArgs e)

@@ -78,7 +78,11 @@ namespace culTAKU
                 ContinueWatching.ExitButton.Click += ExitButton_Click1;
             }
             HomeViewObject.MainGrid.Children.Add(TopBar);
+
             animeDisplayView = CollectionViewSource.GetDefaultView(HomeViewObject.DataContext);
+            animeDisplayView.SortDescriptions.Add(new SortDescription("Rating", ListSortDirection.Descending));
+            animeDisplayView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+
             PropertyChanged += MainWindow_PropertyChanged;
             TopBar.SearchBar.TextChanged += SearchBar_TextChanged;
             TopBar.SortOption.SelectionChanged += SortOption_SelectionChanged;
@@ -147,21 +151,19 @@ namespace culTAKU
         private void SortOption_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selection = ((TextBlock)TopBar.SortOption.SelectedItem).Text;
-            string propName = "Name";
             switch (selection)
             {
                 case "Name":
-                    propName = "Name";
+                    animeDisplayView.SortDescriptions.Clear();
+                    animeDisplayView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
                     break;
                 case "Rating":
-                    propName = "Rating";
-                    break;
-                case "Number of Episodes":
-                    propName = "Episodes";
-                    break;
+                    animeDisplayView.SortDescriptions.Clear();
+                    animeDisplayView.SortDescriptions.Add(new SortDescription("Rating", ListSortDirection.Descending));
+                    animeDisplayView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+                    break;              
             }
-            animeDisplayView.SortDescriptions.Clear();
-            animeDisplayView.SortDescriptions.Add(new SortDescription(propName, ListSortDirection.Descending));
+            
         }
 
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
@@ -181,13 +183,13 @@ namespace culTAKU
             }
         }
 
-        public void PlayAnime(long animeId, int EpisodeNumber = -1)
+        public void PlayAnime(long animeId, int EpisodeIndex = -1, bool isContinue = false)
         {
             foreach(Anime anime in MyAnimeCollection.ListOfAnime)
             {
                 if (anime.Id == animeId)
                 {
-                    Player.PlayAnime(anime, EpisodeNumber);
+                    Player.PlayAnime(anime, EpisodeIndex, isContinue);
                     //mainGrid.Children.RemoveAt(0);
                     mainGrid.Children[0].Visibility = Visibility.Collapsed;
                     mainGrid.Children.Insert(1, Player);
@@ -214,7 +216,14 @@ namespace culTAKU
         {
             statusDisplay.DisplayImagePath = StatusDisplay.StatusType.LOADING;
             statusDisplay.DisplayText = "Checking Internet Connection...";
-            OverLayer.Children.Add(statusDisplay);
+            try
+            {
+                OverLayer.Children.Add(statusDisplay);
+            }
+            catch(ArgumentException e)
+            {
+                return;
+            }
 
             ThreadPool.QueueUserWorkItem(_ =>
             {
