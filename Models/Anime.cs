@@ -163,7 +163,7 @@ namespace culTAKU.Models
 
             
 
-            foreach (FileInfo file in new DirectoryInfo(anime_path).GetFiles("*",SearchOption.TopDirectoryOnly))
+            foreach (FileInfo file in new DirectoryInfo(anime_path).GetFiles("*", SearchOption.TopDirectoryOnly))
             {
                 int num = -1;
                 foreach(Regex check in checks)

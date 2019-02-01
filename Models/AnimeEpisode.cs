@@ -14,7 +14,7 @@ namespace culTAKU.Models
     {
         [field:NonSerialized()]
         public event PropertyChangedEventHandler PropertyChanged;
-        public enum STATUS { WATCHING, WATCHED, NEW, MISSING_LINK }
+        public enum STATUS { WATCHING_NOW, LAST_PLAYED, WATCHING, WATCHED, NEW, MISSING_LINK }
         private readonly Anime parentAnime;
 
         private TimeSpan stoppedAt;

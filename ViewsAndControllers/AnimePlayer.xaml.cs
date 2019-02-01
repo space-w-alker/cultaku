@@ -165,7 +165,7 @@ namespace culTAKU.ViewsAndControllers
             SeekBar.Maximum = AnimeMediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
             Timer.Start();
             PlayerState = PLAYER_STATE.PLAYING;
-            SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHING, CombinedEpisodes[PlayIndex]);
+            SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHING_NOW, CombinedEpisodes[PlayIndex]);
             CurrentPlayingDisplay.Text = string.Format("{0} Episode {1}", CombinedEpisodes[PlayIndex].ParentAnime.Name, CombinedEpisodes[PlayIndex].EpisodeNumber);
             IdleTime = 0;
         }
@@ -207,6 +207,10 @@ namespace culTAKU.ViewsAndControllers
                 {
                     SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHED, CombinedEpisodes[PlayIndex]);
                 }
+                else
+                {
+                    SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHING, CombinedEpisodes[PlayIndex]);
+                }
                 CombinedEpisodes[PlayIndex].StoppedAt = AnimeMediaPlayer.Position;
             }
             AnimeMediaPlayer.Stop();
@@ -232,6 +236,10 @@ namespace culTAKU.ViewsAndControllers
                 if (100.0 * AnimeMediaPlayer.Position.TotalSeconds / AnimeMediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 85)
                 {
                     SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHED, CombinedEpisodes[PlayIndex]);
+                }
+                else
+                {
+                    SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHING, CombinedEpisodes[PlayIndex]);
                 }
                 CombinedEpisodes[PlayIndex].StoppedAt = AnimeMediaPlayer.Position;
             }
@@ -297,6 +305,10 @@ namespace culTAKU.ViewsAndControllers
                 if (100.0 * AnimeMediaPlayer.Position.TotalSeconds / AnimeMediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 85)
                 {
                     SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHED, CombinedEpisodes[PlayIndex]);
+                }
+                else
+                {
+                    SetEpisodeStatus(Models.AnimeEpisode.STATUS.WATCHING, CombinedEpisodes[PlayIndex]);
                 }
                 Misc.Miscelleneous.MainWindow.MyAnimeCollection.AddToContinueWatching(CombinedEpisodes[PlayIndex]);
                 CombinedEpisodes[PlayIndex].StoppedAt = AnimeMediaPlayer.Position;
